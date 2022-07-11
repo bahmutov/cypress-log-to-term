@@ -1,6 +1,6 @@
 {
   "name": "cypress-log-to-term",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Overwrite the cy.log command to print to both the Command Log and to the terminal",
   "main": "index.js",
   "files": [
@@ -8,7 +8,8 @@
     "commands.js"
   ],
   "scripts": {
-    "test": "cypress run"
+    "test": "cypress run",
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "cypress-plugin"
@@ -17,6 +18,11 @@
   "license": "MIT",
   "devDependencies": {
     "cypress": "^10.3.0",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "semantic-release": "^19.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bahmutov/cypress-log-to-term.git"
   }
 }
