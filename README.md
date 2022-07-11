@@ -1,4 +1,4 @@
-# cypress-log-to-term
+# cypress-log-to-term ![cypress version](https://img.shields.io/badge/cypress-10.3.0-brightgreen)
 
 > Overwrite the `cy.log` command to print to both the Command Log and to the terminal
 
