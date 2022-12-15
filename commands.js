@@ -8,5 +8,6 @@ Cypress.Commands.overwrite('log', (log, message, ...args) => {
   log(message, ...args)
   // send the formatted message down to the Node
   // callback in the cypress.config.js to be printed to the terminal
-  cy.task('print', [message, ...args].join(', '), { log: false })
+  const clean = [message, ...args].join(', ').replaceAll('**', '')
+  cy.task('print', clean, { log: false })
 })

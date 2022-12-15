@@ -8,3 +8,9 @@ it('prints log messages', function () {
   cy.log('Hello')
   cy.log('Hello', 'world')
 })
+
+it('removes **', () => {
+  cy.log('**bold** **message**')
+  // make sure to remove from every string
+  cy.log('**bold**', '**message**')
+})
