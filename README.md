@@ -46,6 +46,10 @@ module.exports = defineConfig({
 
 See [cypress/e2e/spec.cy.js](./cypress/e2e/spec.cy.js)
 
+## Markdown
+
+Markdown bold characters `**` are automatically removed before passing them to the task to be printed.
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2022
