@@ -2,9 +2,9 @@
   "name": "cypress-log-to-term",
   "version": "0.0.0-development",
   "description": "Overwrite the cy.log command to print to both the Command Log and to the terminal",
-  "main": "index.js",
+  "main": "src/index.js",
   "files": [
-    "index.js",
+    "src",
     "commands.js"
   ],
   "scripts": {
@@ -24,5 +24,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/bahmutov/cypress-log-to-term.git"
+  },
+  "dependencies": {
+    "string-format": "^2.0.0"
   }
 }
