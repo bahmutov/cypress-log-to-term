@@ -4,6 +4,8 @@
 
 ![Logs to both places](./images/log.png)
 
+Read the blog post [Two Simple Tricks To Make Your Cypress Tests Better](https://glebbahmutov.com/blog/two-cypress-tricks/)
+
 ## Install
 
 Install this plugin from the NPM registry using NPM or Yarn or your favorite Node package manager.
