@@ -3,6 +3,7 @@
   "version": "0.0.0-development",
   "description": "Overwrite the cy.log command to print to both the Command Log and to the terminal",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "files": [
     "src",
     "commands.js"

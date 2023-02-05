@@ -50,6 +50,24 @@ See [cypress/e2e/spec.cy.js](./cypress/e2e/spec.cy.js)
 
 Markdown bold characters `**` are automatically removed before passing them to the task to be printed.
 
+## Types
+
+This package includes TypeScript command definitions for its custom commands in the file [src/index.d.ts](./src/index.d.ts). To use it from your JavaScript specs:
+
+```js
+/// <reference types="cypress-log-to-term" />
+```
+
+If you are using TypeScript, include this module in your types list
+
+```json
+{
+  "compilerOptions": {
+    "types": ["cypress", "cypress-log-to-term"]
+  }
+}
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2022
