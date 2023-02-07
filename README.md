@@ -115,6 +115,24 @@ cy.wrap([{ name: 'Joe' }, { name: { first: 'Anna' } }])
 // prints 'her name is Anna'
 ```
 
+## Format callback
+
+You can pass a callback function to the overwritten `cy.log` command. This way you can return a formatted string given the subject value.
+
+```js
+const person = { name: 'Joe' }
+cy.wrap(person).log((p) => `name is ${p.name}`)
+// prints 'name is Joe'
+cy.wrap([1, 2, 3]).log((list) => list[1])
+// prints "2"
+```
+
+If you return non-string result, `cy.log` will try its best to serialize it
+
+```js
+cy.wrap({ name: 'Me' }).log((x) => x) // {"name":"Me"}
+```
+
 ## Types
 
 This package includes TypeScript command definitions for its custom commands in the file [src/index.d.ts](./src/index.d.ts). To use it from your JavaScript specs:
