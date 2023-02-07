@@ -52,6 +52,69 @@ See [cypress/e2e/spec.cy.js](./cypress/e2e/spec.cy.js)
 
 Markdown bold characters `**` are automatically removed before passing them to the task to be printed.
 
+## Yields the current subject
+
+The `cy.log` yields the current subject to the next command, because [it should](https://glebbahmutov.com/blog/better-cypress-log/).
+
+```js
+cy.wrap(42).log().should('equal', 42)
+```
+
+## Format string
+
+This plugins adds format string and format callback function feature to the `cy.log` command. For example, the "standard" `cy.log` command could only print a string argument
+
+```js
+cy.wrap({ name: 'Joe' }).log('the name')
+// prints "the name"
+```
+
+This module allows you to print the current subject
+
+```js
+cy.wrap({ name: 'Joe' }).log()
+// prints '{"name":"Joe"}'
+```
+
+Complex objects are supported
+
+```js
+cy.wrap([1, 'hello', { name: 'Joe' }]).log()
+// prints '[1,"hello",{"name":"Joe"}]'
+```
+
+You can add a string argument and insert the formatted subject into it
+
+```js
+cy.wrap({ name: 'Joe' }).log('person is %o')
+// prints 'person is {"name":"Joe"}'
+```
+
+This is equivalent to `{0}` notation
+
+```js
+cy.wrap({ name: 'Joe' }).log('person is {0}')
+// prints 'person is {"name":"Joe"}'
+```
+
+You can even access the properties of the subject
+
+```js
+cy.wrap({ name: 'Joe' }).log('my name is {0.name}')
+// prints 'my name is Joe'
+```
+
+Deep properties are allowed
+
+```js
+cy.wrap([{ name: 'Joe' }, { name: { first: 'Anna' } }])
+  // from the subject (accessed via {0})
+  // grab the property "1" (which is the second item in our array)
+  // then grab the path "name.first"
+  .log('her name is {0.1.name.first}')
+// prints 'her name is Anna'
+```
+
 ## Types
 
 This package includes TypeScript command definitions for its custom commands in the file [src/index.d.ts](./src/index.d.ts). To use it from your JavaScript specs:

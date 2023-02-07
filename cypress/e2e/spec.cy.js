@@ -14,3 +14,7 @@ it('removes **', () => {
   // make sure to remove from every string
   cy.log('**bold**', '**message**')
 })
+
+it('yields the current subject', () => {
+  cy.wrap(42).log().should('equal', 42)
+})
