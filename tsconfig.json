@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "ES6"],
+    "types": ["cypress"],
+    "allowJs": true,
+    "noEmit": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/index.d.ts", "commands.js", "cypress/e2e/**/*.js"]
+}
