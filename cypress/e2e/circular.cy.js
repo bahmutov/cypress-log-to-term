@@ -21,4 +21,5 @@ it('logs jQuery subject', () => {
 it('logs DOM element', () => {
   cy.visit('cypress/index.html')
   cy.get('h1').log()
+  cy.get('p').log()
 })

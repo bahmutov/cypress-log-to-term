@@ -5,6 +5,7 @@ module.exports = defineConfig({
     // baseUrl, etc
     supportFile: false,
     fixturesFolder: false,
+    experimentalRunAllSpecs: true,
     setupNodeEvents(on, config) {
       // implement node event listeners here
       // and load any plugins that require the Node environment

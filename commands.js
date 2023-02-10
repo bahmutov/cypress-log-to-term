@@ -20,9 +20,30 @@ function formatTitle(pattern, x) {
   return format(pattern, x)
 }
 
+function stringifyDomAttributes(el) {
+  if (!el.attributes.length) {
+    return ''
+  }
+  return Cypress._.map(el.attributes, (a) => {
+    if (a.nodeName === 'id' || a.nodeName === 'class') {
+      return
+    }
+    return a.nodeName + '=' + a.nodeValue
+  })
+    .filter(Boolean)
+    .join(' ')
+}
+
+function stringifyDomElement(el) {
+  const attrs = stringifyDomAttributes(el)
+  return `<${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}${
+    el.className ? '.' + el.className : ''
+  }${attrs ? ' ' + attrs : ''}/>`
+}
+
 Cypress.Commands.overwrite('log', (logCommand, formatPattern, ...args) => {
   const log = Cypress.log({ name: 'log', message: '' })
-  const subject = Cypress.state('subject')
+  let subject = Cypress.state('subject')
 
   let formatted = formatPattern
   if (typeof formatPattern === 'string') {
@@ -31,6 +52,12 @@ Cypress.Commands.overwrite('log', (logCommand, formatPattern, ...args) => {
     formatted = formatPattern(subject)
     if (typeof formatted !== 'string') {
       formatted = stringify(formatted)
+    }
+  } else if (Cypress.dom.isJquery(subject)) {
+    formatted = `$ of ${subject.length}`
+    if (subject.length) {
+      const els = subject.toArray().map(stringifyDomElement).join(',')
+      formatted += ' ' + els
     }
   } else {
     formatted = stringify(subject)
