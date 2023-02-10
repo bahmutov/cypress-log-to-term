@@ -5,16 +5,17 @@
 // to avoid relying on old polyfills for node "format"
 // use a custom formatter plus our own code
 const format = require('string-format')
+const stringify = require('safe-stable-stringify')
 
 function formatTitle(pattern, x) {
   if (pattern.includes('{}') || pattern.includes('{0}')) {
-    x = JSON.stringify(x)
+    x = stringify(x)
   }
   if (pattern.includes('%d')) {
     return pattern.replace('%d', x)
   }
   if (pattern.includes('%o')) {
-    return pattern.replace('%o', JSON.stringify(x))
+    return pattern.replace('%o', stringify(x))
   }
   return format(pattern, x)
 }
@@ -29,10 +30,10 @@ Cypress.Commands.overwrite('log', (logCommand, formatPattern, ...args) => {
   } else if (typeof formatPattern === 'function') {
     formatted = formatPattern(subject)
     if (typeof formatted !== 'string') {
-      formatted = JSON.stringify(formatted)
+      formatted = stringify(formatted)
     }
   } else {
-    formatted = JSON.stringify(subject)
+    formatted = stringify(subject)
   }
 
   log.set('message', formatted)

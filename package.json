@@ -29,6 +29,7 @@
     "url": "https://github.com/bahmutov/cypress-log-to-term.git"
   },
   "dependencies": {
+    "safe-stable-stringify": "^2.4.2",
     "string-format": "^2.0.0"
   }
 }
