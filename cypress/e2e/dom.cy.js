@@ -1,12 +1,20 @@
 /// <reference path="../../src/index.d.ts" />
 
 import '../../commands'
+import { stringifyObjectOrJquery } from '../../src/utils'
 
 chai.config.truncateThreshold = 200
 
 describe('jQuery objects', () => {
+  it('stringifies jQuery', () => {
+    const $el = Cypress.$('<div id="obj" class="my-object">Hello</div>')
+    const s = stringifyObjectOrJquery($el)
+    expect(s, 'div').to.equal('$ of 1 <div#obj.my-object />')
+  })
+
   it('logs jQuery subject', () => {
-    cy.wrap(Cypress.$('<div id="obj" class="my-object">Hello</div>')).log()
+    const $el = Cypress.$('<div id="obj" class="my-object">Hello</div>')
+    cy.wrap($el).log()
   })
 
   it('logs DOM element', () => {
