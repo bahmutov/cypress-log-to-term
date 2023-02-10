@@ -20,7 +20,7 @@ describe('jQuery objects', () => {
     cy.get('#people li').log()
   })
 
-  it.only('logs with format string', () => {
+  it('logs with format string', () => {
     cy.visit('cypress/index.html')
     cy.get('#people li').log('list of people %o')
   })
