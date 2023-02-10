@@ -9,13 +9,13 @@ const stringify = require('safe-stable-stringify')
 
 function formatTitle(pattern, x) {
   if (pattern.includes('{}') || pattern.includes('{0}')) {
-    x = stringify(x)
+    x = stringifyObjectOrJquery(x)
   }
   if (pattern.includes('%d')) {
     return pattern.replace('%d', x)
   }
   if (pattern.includes('%o')) {
-    return pattern.replace('%o', stringify(x))
+    return pattern.replace('%o', stringifyObjectOrJquery(x))
   }
   return format(pattern, x)
 }
@@ -41,6 +41,39 @@ function stringifyDomElement(el) {
   }${attrs ? ' ' + attrs : ''}/>`
 }
 
+function stringifyjQuery(subject) {
+  let s = `$ of ${subject.length}`
+  if (subject.length) {
+    const elements = subject.toArray()
+    if (subject.length > 3) {
+      // skip the middle elements
+      const els =
+        '[' +
+        stringifyDomElement(elements[0]) +
+        '...' +
+        stringifyDomElement(elements.at(-1)) +
+        ']'
+      s += ' ' + els
+    } else {
+      const els = elements.map(stringifyDomElement).join(',')
+      s += ' ' + els
+    }
+  }
+  const maxLength = chai.config.truncateThreshold || 200
+  if (s.length > maxLength) {
+    return s.slice(0, maxLength) + '...'
+  }
+  return s
+}
+
+function stringifyObjectOrJquery(subject) {
+  if (Cypress.dom.isJquery(subject)) {
+    return stringifyjQuery(subject)
+  } else {
+    return stringify(subject)
+  }
+}
+
 Cypress.Commands.overwrite('log', (logCommand, formatPattern, ...args) => {
   const log = Cypress.log({ name: 'log', message: '' })
   let subject = Cypress.state('subject')
@@ -51,16 +84,10 @@ Cypress.Commands.overwrite('log', (logCommand, formatPattern, ...args) => {
   } else if (typeof formatPattern === 'function') {
     formatted = formatPattern(subject)
     if (typeof formatted !== 'string') {
-      formatted = stringify(formatted)
-    }
-  } else if (Cypress.dom.isJquery(subject)) {
-    formatted = `$ of ${subject.length}`
-    if (subject.length) {
-      const els = subject.toArray().map(stringifyDomElement).join(',')
-      formatted += ' ' + els
+      formatted = stringifyObjectOrJquery(formatted)
     }
   } else {
-    formatted = stringify(subject)
+    formatted = stringifyObjectOrJquery(subject)
   }
 
   log.set('message', formatted)

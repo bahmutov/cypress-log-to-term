@@ -133,6 +133,75 @@ If you return non-string result, `cy.log` will try its best to serialize it
 cy.wrap({ name: 'Me' }).log((x) => x) // {"name":"Me"}
 ```
 
+## Circular objects
+
+If the subject to be serialized has circular references, they are safely converted to string
+
+```js
+const obj = {
+  name: 'object',
+}
+obj.next = obj
+// try to log a circular object
+cy.wrap(obj, { log: false }).log()
+// {"name":"object","next":"[Circular]"}
+```
+
+See [circular.cy.js](./cypress/e2e/circular.cy.js)
+
+## jQuery / DOM elements
+
+Are serialized with main properties (id, class, attributes) and the number of matched elements
+
+```html
+<h1 id="title">Hello</h1>
+```
+
+```js
+cy.get('h1').log()
+// $ of 1 <div#obj.my-object/>
+```
+
+If there are a lot of yielded elements, only the first and the last one are logged
+
+```html
+<ol id="people">
+  <li class="first">one</li>
+  <li>two</li>
+  <li>three</li>
+  <li>four</li>
+  <li class="last">five</li>
+</ol>
+```
+
+```js
+cy.get('#people li').log()
+// $ of 5 [<li.first/>...<li.last/>]
+```
+
+**Note:** when serializing, the log respects the `chai.config.truncateThreshold` setting. To log more info, increase it in your spec or support file:
+
+```html
+<p class="some-class" data-cy="para" data-test="my-p">Test page</p>
+```
+
+```js
+cy.get('#people li').log()
+// default
+// $ of 1 <p.some-class data-cy=para data-t...
+// with chai.config.truncateThreshold = 200
+// $ of 1 <p.some-class data-cy=para data-test=my-p/>
+```
+
+**Tip:** use the format string to better explain what the elements are
+
+```js
+cy.get('#people li').log('list of people %o')
+// list of people $ of 5 [<li.first/>...<li.last/>]
+```
+
+See [dom.cy.js](./cypress/e2e/dom.cy.js)
+
 ## Types
 
 This package includes TypeScript command definitions for its custom commands in the file [src/index.d.ts](./src/index.d.ts). To use it from your JavaScript specs:
