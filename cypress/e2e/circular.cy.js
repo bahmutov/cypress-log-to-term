@@ -17,3 +17,8 @@ it('logs circular object', () => {
 it('logs jQuery subject', () => {
   cy.wrap(Cypress.$('<div id="obj" class="my-object">Hello</div>')).log()
 })
+
+it('logs DOM element', () => {
+  cy.visit('cypress/index.html')
+  cy.get('h1').log()
+})
