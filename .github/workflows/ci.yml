@@ -12,8 +12,10 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           # confirm the types are correct
-          # and there are no "it.only" left in code
-          build: npm run lint && npm run stop-oly
+          build: npm run lint
+
+      - name: No it.only left in the code
+        run: npm run stop-only
 
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v3
