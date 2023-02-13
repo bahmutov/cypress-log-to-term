@@ -40,13 +40,14 @@ Cypress.Commands.overwrite('log', (logCommand, formatPattern, ...args) => {
   const log = Cypress.log({
     name: 'log',
     message: short,
+    $el: Cypress.dom.isJquery(subject) ? subject : null,
     consoleProps() {
       return {
         log: full,
+        subject,
       }
     },
   })
-  // log.set('message', short)
 
   // send the formatted message down to the Node
   // callback in the cypress.config.js to be printed to the terminal
