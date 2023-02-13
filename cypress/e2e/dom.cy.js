@@ -8,8 +8,12 @@ chai.config.truncateThreshold = 200
 describe('jQuery objects', () => {
   it('stringifies jQuery', () => {
     const $el = Cypress.$('<div id="obj" class="my-object">Hello</div>')
-    const s = stringifyObjectOrJquery($el)
-    expect(s, 'div').to.equal('$ of 1 <div#obj.my-object />')
+    const o = stringifyObjectOrJquery($el)
+    expect(o).to.be.an('object').and.have.keys(['short', 'full'])
+    expect(o.short, 'short text').to.equal('$ of 1 <div#obj.my-object />')
+    expect(o.full, 'full text').to.equal(
+      '$ of 1 <div#obj.my-object>Hello</div>',
+    )
   })
 
   it('logs jQuery subject', () => {

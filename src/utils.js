@@ -5,13 +5,15 @@ const stringify = require('safe-stable-stringify')
 
 function formatTitle(pattern, x) {
   if (pattern.includes('{}') || pattern.includes('{0}')) {
-    x = stringifyObjectOrJquery(x)
+    // TODO return the full string too
+    x = stringifyObjectOrJquery(x).short
   }
   if (pattern.includes('%d')) {
     return pattern.replace('%d', x)
   }
   if (pattern.includes('%o')) {
-    return pattern.replace('%o', stringifyObjectOrJquery(x))
+    // TODO return the full string too
+    return pattern.replace('%o', stringifyObjectOrJquery(x).short)
   }
   return format(pattern, x)
 }
@@ -35,6 +37,21 @@ function stringifyDomElement(el) {
   return `<${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}${
     el.className ? '.' + el.className : ''
   }${attrs ? ' ' + attrs : ''} />`
+}
+
+function stringifyDomElementWithText(el) {
+  const attrs = stringifyDomAttributes(el)
+  const text = el.innerText
+  const tag = el.tagName.toLowerCase()
+  if (text.length < 30) {
+    return `<${tag}${el.id ? '#' + el.id : ''}${
+      el.className ? '.' + el.className : ''
+    }${attrs ? ' ' + attrs : ''}>${text}</${tag}>`
+  } else {
+    return `<${el.tagName.toLowerCase()}${el.id ? '#' + el.id : ''}${
+      el.className ? '.' + el.className : ''
+    }${attrs ? ' ' + attrs : ''} />`
+  }
 }
 
 function stringifyjQuery(subject) {
@@ -62,12 +79,39 @@ function stringifyjQuery(subject) {
   return s
 }
 
+function stringifyjQueryWithText(subject) {
+  let s = `$ of ${subject.length}`
+  if (subject.length) {
+    const elements = subject.toArray()
+    if (subject.length > 3) {
+      // skip the middle elements
+      const els =
+        '[' +
+        stringifyDomElementWithText(elements[0]) +
+        '...' +
+        stringifyDomElementWithText(elements.at(-1)) +
+        ']'
+      s += ' ' + els
+    } else {
+      const els = elements.map(stringifyDomElementWithText).join(',')
+      s += ' ' + els
+    }
+  }
+  const maxLength = 2000
+  if (s.length > maxLength) {
+    return s.slice(0, maxLength) + '...'
+  }
+  return s
+}
+
 function stringifyObjectOrJquery(subject) {
-  debugger
   if (Cypress.dom.isJquery(subject)) {
-    return stringifyjQuery(subject)
+    return {
+      short: stringifyjQuery(subject),
+      full: stringifyjQueryWithText(subject),
+    }
   } else {
-    return stringify(subject)
+    return { short: stringify(subject) }
   }
 }
 

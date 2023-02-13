@@ -10,24 +10,37 @@ Cypress.Commands.overwrite('log', (logCommand, formatPattern, ...args) => {
   // @ts-ignore
   let subject = Cypress.state('subject')
 
-  let formatted = formatPattern
+  let short = formatPattern
+  let full = formatPattern
   if (typeof formatPattern === 'string') {
-    formatted = formatTitle(formatPattern, subject)
+    short = full = formatTitle(formatPattern, subject)
   } else if (typeof formatPattern === 'function') {
     // @ts-ignore
-    formatted = formatPattern(subject)
-    if (typeof formatted !== 'string') {
-      formatted = stringifyObjectOrJquery(formatted)
+    short = formatPattern(subject)
+    if (typeof short !== 'string') {
+      const stringified = stringifyObjectOrJquery(short)
+      short = stringified.short
+      if (stringified.full) {
+        full = stringified.full
+      } else {
+        full = short
+      }
     }
   } else {
-    formatted = stringifyObjectOrJquery(subject)
+    const stringified = stringifyObjectOrJquery(subject)
+    short = stringified.short
+    if (stringified.full) {
+      full = stringified.full
+    } else {
+      full = short
+    }
   }
 
-  log.set('message', formatted)
+  log.set('message', short)
 
   // send the formatted message down to the Node
   // callback in the cypress.config.js to be printed to the terminal
-  const clean = [formatted, ...args].join(', ').replaceAll('**', '')
+  const clean = [full, ...args].join(', ').replaceAll('**', '')
   cy.task('print', clean, { log: false }).then(() => {
     return subject
   })
