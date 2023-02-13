@@ -1,7 +1,7 @@
 /// <reference path="../../src/index.d.ts" />
 
 import '../../commands'
-import { stringifyObjectOrJquery } from '../../src/utils'
+import { formatTitle, stringifyObjectOrJquery } from '../../src/utils'
 
 chai.config.truncateThreshold = 200
 
@@ -25,6 +25,21 @@ describe('jQuery objects', () => {
     cy.visit('cypress/index.html')
     cy.get('h1').log()
     cy.get('p').log()
+  })
+
+  it('formatTitle with DOM element', () => {
+    const $el = Cypress.$('<div id="obj" class="my-object">Hello</div>')
+    const o = formatTitle('hello says %o', $el)
+    expect(o).to.have.keys(['short', 'full'])
+    expect(o).to.deep.equal({
+      short: 'hello says $ of 1 <div#obj.my-object />',
+      full: 'hello says $ of 1 <div#obj.my-object>Hello</div>',
+    })
+  })
+
+  it('logs one DOM element with text with format string', () => {
+    cy.visit('cypress/index.html')
+    cy.get('h1').log('h1 is %o')
   })
 
   it('logs multiple elements', () => {

@@ -4,16 +4,28 @@ const format = require('string-format')
 const stringify = require('safe-stable-stringify')
 
 function formatTitle(pattern, x) {
+  if (typeof x === 'string') {
+    x = {
+      short: x,
+      full: x,
+    }
+  }
+
   if (pattern.includes('{}') || pattern.includes('{0}')) {
-    // TODO return the full string too
-    x = stringifyObjectOrJquery(x).short
+    x = stringifyObjectOrJquery(x)
   }
   if (pattern.includes('%d')) {
-    return pattern.replace('%d', x)
+    return {
+      short: pattern.replace('%d', x.short),
+      full: pattern.replace('%d', x.full),
+    }
   }
   if (pattern.includes('%o')) {
-    // TODO return the full string too
-    return pattern.replace('%o', stringifyObjectOrJquery(x).short)
+    x = stringifyObjectOrJquery(x)
+    return {
+      short: pattern.replace('%o', x.short),
+      full: pattern.replace('%o', x.full),
+    }
   }
   return format(pattern, x)
 }

@@ -13,7 +13,9 @@ Cypress.Commands.overwrite('log', (logCommand, formatPattern, ...args) => {
   let short = formatPattern
   let full = formatPattern
   if (typeof formatPattern === 'string') {
-    short = full = formatTitle(formatPattern, subject)
+    const stringified = formatTitle(formatPattern, subject)
+    short = stringified.short
+    full = stringified.full
   } else if (typeof formatPattern === 'function') {
     // @ts-ignore
     short = formatPattern(subject)
