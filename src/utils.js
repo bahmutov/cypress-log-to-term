@@ -4,7 +4,11 @@ const format = require('string-format')
 const stringify = require('safe-stable-stringify')
 
 function formatTitle(pattern, x) {
-  if (typeof x === 'string') {
+  if (
+    typeof x === 'string' ||
+    typeof x === 'number' ||
+    typeof x === 'boolean'
+  ) {
     x = {
       short: x,
       full: x,
@@ -27,7 +31,12 @@ function formatTitle(pattern, x) {
       full: pattern.replace('%o', x.full),
     }
   }
-  return format(pattern, x)
+
+  const s = format(pattern, x)
+  return {
+    short: s,
+    full: s,
+  }
 }
 
 function stringifyDomAttributes(el) {
@@ -123,11 +132,45 @@ function stringifyObjectOrJquery(subject) {
       full: stringifyjQueryWithText(subject),
     }
   } else {
-    return { short: stringify(subject) }
+    const s = stringify(subject)
+    return { short: s, full: s }
   }
 }
 
+function formatLog(formatPattern, subject) {
+  let short = formatPattern
+  let full = formatPattern
+  if (typeof formatPattern === 'string') {
+    const stringified = formatTitle(formatPattern, subject)
+    short = stringified.short
+    full = stringified.full
+  } else if (typeof formatPattern === 'function') {
+    // @ts-ignore
+    short = formatPattern(subject)
+    if (typeof short !== 'string') {
+      const stringified = stringifyObjectOrJquery(short)
+      short = stringified.short
+      if (stringified.full) {
+        full = stringified.full
+      } else {
+        full = short
+      }
+    }
+  } else {
+    const stringified = stringifyObjectOrJquery(subject)
+    short = stringified.short
+    if (stringified.full) {
+      full = stringified.full
+    } else {
+      full = short
+    }
+  }
+
+  return { short, full }
+}
+
 module.exports = {
+  formatLog,
   formatTitle,
   stringifyObjectOrJquery,
 }
