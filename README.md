@@ -4,7 +4,12 @@
 
 ![Logs to both places](./images/log.png)
 
-Read the blog post [Two Simple Tricks To Make Your Cypress Tests Better](https://glebbahmutov.com/blog/two-cypress-tricks/)
+## Explanation
+
+Read the blog post [Two Simple Tricks To Make Your Cypress Tests Better](https://glebbahmutov.com/blog/two-cypress-tricks/). This plugin is covered in my [Cypress Plugins course](https://cypress.tips/courses/cypress-plugins) 🎓:
+
+- [Lesson a3: Log the messages from the test to the terminal](https://cypress.tips/courses/cypress-plugins/lessons/a3)
+- [Lesson a4: Log the messages using the plugin cypress-log-to-term](https://cypress.tips/courses/cypress-plugins/lessons/a4)
 
 ## Install
 
