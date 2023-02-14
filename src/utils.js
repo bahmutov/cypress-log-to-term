@@ -18,13 +18,13 @@ function formatTitle(pattern, x) {
   if (pattern.includes('{}') || pattern.includes('{0}')) {
     x = stringifyObjectOrJquery(x)
   }
-  if (pattern.includes('%d')) {
+  if (pattern.includes('%d') && x) {
     return {
       short: pattern.replace('%d', x.short),
       full: pattern.replace('%d', x.full),
     }
   }
-  if (pattern.includes('%o')) {
+  if (pattern.includes('%o') && x) {
     x = stringifyObjectOrJquery(x)
     return {
       short: pattern.replace('%o', x.short),

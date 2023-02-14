@@ -29,6 +29,14 @@ describe('formatLog', () => {
     })
   })
 
+  it('does not crash with %d', () => {
+    const r = formatLog('number is %d')
+    expect(r).to.deep.equal({
+      short: 'number is %d',
+      full: 'number is %d',
+    })
+  })
+
   it('formats subject without a string', () => {
     const r = formatLog(undefined, 42)
     expect(r).to.deep.equal({

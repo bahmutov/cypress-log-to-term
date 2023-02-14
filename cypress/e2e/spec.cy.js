@@ -16,3 +16,7 @@ it('removes **', () => {
 it('yields the current subject', () => {
   cy.wrap(42).log().should('equal', 42)
 })
+
+it('logs parameters', () => {
+  cy.log('adding %d + %d equals', 2, 3, 5)
+})
