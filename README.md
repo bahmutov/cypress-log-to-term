@@ -6,8 +6,11 @@
 
 ## Explanation
 
-Read the blog post [Two Simple Tricks To Make Your Cypress Tests Better](https://glebbahmutov.com/blog/two-cypress-tricks/). This plugin is covered in my [Cypress Plugins course](https://cypress.tips/courses/cypress-plugins) 🎓:
+Read the blog posts 
+- [Two Simple Tricks To Make Your Cypress Tests Better](https://glebbahmutov.com/blog/two-cypress-tricks/).
+- [Collect All URLs Visited During Cypress Test](https://glebbahmutov.com/blog/collect-tested-urls/)
 
+This plugin is covered in my [Cypress Plugins course](https://cypress.tips/courses/cypress-plugins) 🎓:
 - [Lesson a3: Log the messages from the test to the terminal](https://cypress.tips/courses/cypress-plugins/lessons/a3)
 - [Lesson a4: Log the messages using the plugin cypress-log-to-term](https://cypress.tips/courses/cypress-plugins/lessons/a4)
 
