@@ -32,10 +32,18 @@ function formatTitle(pattern, x) {
     }
   }
 
-  const s = format(pattern, x)
-  return {
-    short: s,
-    full: s,
+  try {
+    const s = format(pattern, x)
+    return {
+      short: s,
+      full: s,
+    }
+  } catch (err) {
+    // if the format pattern is invalid, just return it as is
+    return {
+      short: pattern,
+      full: pattern,
+    }
   }
 }
 
