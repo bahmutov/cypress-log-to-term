@@ -9,10 +9,12 @@ on:
 jobs:
   badges:
     name: Badges
+    permissions:
+      contents: write
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Update version badges 🏷
         run: npx -p dependency-version-badge update-badge cypress
